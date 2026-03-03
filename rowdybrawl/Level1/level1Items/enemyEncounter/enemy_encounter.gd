@@ -5,7 +5,7 @@ class_name enemyEncounter
 
 var spawned := false
 var enemyArray = []
-var playerRef : Player = null
+var playerRef : player = null
 
 func spawnEnemies():
 	for enemySpawn : enemySpawnPoint in enemies_to_spawn.get_children():
@@ -25,9 +25,8 @@ func _process(delta: float) -> void:
 
 
 func _on_player_trigger_body_entered(body: Node2D) -> void:
-	if body is Player and !spawned:
-		playerRef = body
-		# TODO: refactor music manager
-		# playerRef.enterCombat()
+	if body.get_parent() is player and !spawned:
+		playerRef = body.get_parent()
+		playerRef.enterCombat()
 		spawnEnemies()
 		spawned = true

@@ -50,7 +50,7 @@ func damageEnemy(targetEnemy : Enemy):
 		knockbackDir = knockbackDir.normalized()
 		targetEnemy.applyKnockback(Vector2(knockbackDir.x * dir,0), knockbackStrength * 10)
 
-func damagePlayer(targetPlayer : Node2D):
+func damagePlayer(targetPlayer : player):
 	targetPlayer.take_hit(damage, Vector2(knockbackDir.x * dir,knockbackDir.y), knockbackStrength, stunDuration, userRef)
 	if targetPlayer.grounded:
 		knockbackDir = knockbackDir.normalized()

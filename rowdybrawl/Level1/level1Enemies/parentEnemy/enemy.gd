@@ -37,7 +37,7 @@ var weightIncrease := 0.0
 var moveDirection : Vector2
 var targetPos = Vector2.ZERO
 
-var playerRef: Player = null
+var playerRef: player = null
 enum aiStates {IDLE, CHASE, ATTACK}
 var ai = aiStates.IDLE
 var goRight := randi_range(0,1)
@@ -238,7 +238,7 @@ func canMove() -> bool:
 func accelarateInDirection():
 	if abs((moveDirection.x * (accelaration + friction)) + velocity.x) <= maxSpeed:
 		velocity.x += moveDirection.x * (accelaration + friction)
-		if playerRef.global_position.x - global_position.x < 0:
+		if playerRef.playerBody.global_position.x - global_position.x < 0:
 			facingDir = -1
 		else:
 			facingDir = 1
@@ -250,14 +250,14 @@ func aiIdleFunction():
 	pass
 func aiChaseFunction():
 	if playerRef != null:
-		targetPos.y = playerRef.global_position.y
+		targetPos.y = playerRef.playerBody.global_position.y
 		if !goRight:
-			targetPos.x = playerRef.global_position.x - 50 # offset so that they can hit the player easier
+			targetPos.x = playerRef.playerBody.global_position.x - 50 # offset so that they can hit the player easier
 		else:
-			targetPos.x = playerRef.global_position.x + 50
+			targetPos.x = playerRef.playerBody.global_position.x + 50
 func aiAttackFunction(delta :float):
 	hitTimer -= delta
-	targetPos = playerRef.global_position
+	targetPos = playerRef.playerBody.global_position
 #	uncomment the line above if you wanna see what EXTRA HARD enemies could act like
 	if hitTimer <= 0:
 		if playerRef.playerYPosition > yPosition:
@@ -268,7 +268,7 @@ func aiAttackFunction(delta :float):
 			ai = aiStates.CHASE
 			goRight = randi_range(0,1)
 
-	if (playerRef.global_position - global_position).length() > 300:
+	if (playerRef.playerBody.global_position - global_position).length() > 300:
 		ai = aiStates.CHASE
 		hitTimer = hitRate
 		goRight = randi_range(0,1)
@@ -310,7 +310,7 @@ func _on_detection_area_body_entered(body: Node2D) -> void:
 
 	
 	
-	if body.get_parent() is Player:
+	if body.get_parent() is player:
 		playerRef = body.get_parent()
 		playerRef.enterCombat()
 		ai = aiStates.CHASE

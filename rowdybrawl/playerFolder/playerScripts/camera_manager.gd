@@ -1,7 +1,7 @@
 extends Node2D
 class_name cameraController
 
-@onready var playerReference : Player = self.get_parent()
+@onready var playerReference : player = self.get_parent()
 @onready var camera2d: Camera2D = $Camera2D
 
 #reminder that smaller values correspond to higher up on the screen
