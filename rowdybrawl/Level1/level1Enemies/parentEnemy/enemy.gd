@@ -177,14 +177,6 @@ func die():
 		return
 	enemy_alive = false
 	health = 0
-	if get_parent() is enemyEncounter:
-		get_parent().deadCount += 1
-	elif get_parent().get_parent() is enemyEncounter:
-		get_parent().get_parent().deadCount += 1
-	elif get_parent().get_parent().get_parent() is enemyEncounter:
-		get_parent().get_parent().get_parent().deadCount += 1
-	else:
-		print("i failed....")
 	applyKnockback(Vector2(.3,-1), 5000)
 	playSound(ENEMY_DIE_SOUND_EFFECT_DEFAULT, 0.3, 1)
 	enemy_collision.set_deferred("disabled", true)		
