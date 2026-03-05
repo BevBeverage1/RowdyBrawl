@@ -288,8 +288,12 @@ func enterScene(fromTop : bool):
 
 # misc
 func playSound(sound : AudioStream, pitch : float = 1.0, volumedB : float = 0):
-	var playback : AudioStreamPlaybackPolyphonic = sound_track_1.get_stream_playback()
+	if not sound_track_1.playing:
+		sound_track_1.play()
+	var playback: AudioStreamPlaybackPolyphonic 
+	playback = sound_track_1.get_stream_playback()
 	playback.play_stream(sound, 0, volumedB,pitch)
+
 func resetSoundTrack():
 	sound_track_1.volume_db = 0.0
 	sound_track_1.pitch_scale = 1.0
