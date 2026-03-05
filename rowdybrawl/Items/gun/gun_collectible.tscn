@@ -1,0 +1,18 @@
+[gd_scene load_steps=5 format=3 uid="uid://d3p53ex44txe2"]
+
+[ext_resource type="PackedScene" uid="uid://c7hpbi72o01bm" path="res://Items/collectible.tscn" id="1_yx6al"]
+[ext_resource type="Texture2D" uid="uid://d4djctpmmoccd" path="res://Items/gun/gun_sprite.png" id="2_70frj"]
+[ext_resource type="Resource" uid="uid://f7p5tv6b1fxa" path="res://Items/gun/gun_item.tres" id="2_d7clr"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_yx6al"]
+radius = 15.0
+
+[node name="Collectible" instance=ExtResource("1_yx6al")]
+player_item = ExtResource("2_d7clr")
+
+[node name="Sprite" parent="." index="0"]
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("2_70frj")
+
+[node name="CollisionShape2D" parent="Sprite/CollectArea" index="0"]
+shape = SubResource("CircleShape2D_yx6al")
