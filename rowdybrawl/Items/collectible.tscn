@@ -65,6 +65,6 @@ autoplay = "hover"
 modulate = Color(1, 1, 1, 0.58431375)
 self_modulate = Color(1, 1, 1, 0.78039217)
 texture_filter = 1
-position = Vector2(0, -10)
+position = Vector2(0, 5)
 scale = Vector2(2.2, 1)
 texture = ExtResource("3_mnvqo")
