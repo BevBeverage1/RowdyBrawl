@@ -1,21 +1,68 @@
 [gd_scene load_steps=2 format=3 uid="uid://bhe8dmp47prd3"]
 
 [sub_resource type="GDScript" id="GDScript_i80g2"]
-script/source = "extends Path2D
+script/source = "@tool
+extends Path2D
 
 @export var target_node: Node2D
-@onready var follow: PathFollow2D = $PathFollow
+@onready var path_follow: PathFollow2D = %PathFollow
+var camera: Camera2D
 
-func _process(delta: float) -> void:
-	var offset := curve.get_closest_offset(target_node.global_position)
-	follow.progress = offset
+var is_section_active: bool
+
+
+
+func _init() -> void:
+	child_entered_tree.connect(func(_n): update_configuration_warnings())
+	child_exiting_tree.connect(func(_n): update_configuration_warnings())
+
+
+func _ready():
+	if Engine.is_editor_hint(): return
+	
+	# find camera in children
+	camera = get_child(get_children().find_custom(func(node): return node is Camera2D))
+	
+	# parent camera to PathFollow
+	if camera:
+		if camera.get_parent():
+			camera.get_parent().remove_child(camera)
+		
+		path_follow.add_child(camera)
+		camera.position = Vector2.ZERO
+	else:
+		push_error(\"No child of type Camera2D\")
+
+
+func _process(_delta: float) -> void:
+	if Engine.is_editor_hint(): return 
+	
+	if not is_section_active:
+		var offset := curve.get_closest_offset(target_node.global_position)
+		path_follow.progress = offset
+	
+	
+func _get_configuration_warnings() -> PackedStringArray:
+	var warnings: PackedStringArray
+	
+	if get_children().find_custom(func(node): return node is Camera2D) == -1:
+		warnings.append(\"needs a child Camera2D node\")
+	
+	return warnings
+	
+	
+func set_section_active(active: bool, section: Area2D):
+	if active:
+		is_section_active = true
+		var offset := curve.get_closest_offset(to_local(section.global_position))
+		path_follow.progress = offset
+	else:
+		is_section_active = false
 "
 
 [node name="CameraFollowPath" type="Path2D"]
 script = SubResource("GDScript_i80g2")
 
 [node name="PathFollow" type="PathFollow2D" parent="."]
+unique_name_in_owner = true
 position = Vector2(1276.513, 30)
-
-[node name="Camera2D" type="Camera2D" parent="PathFollow"]
-position_smoothing_enabled = true
