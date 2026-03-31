@@ -89,6 +89,15 @@ func _physics_process(delta: float) -> void:     # _physics_process runs in fixe
 		
 	# attacks and stuff
 	if Input.is_action_just_pressed("lightAttack") and canAttack():
+		var indexx: int = hit_box.get_child(0).get_overlapping_areas().find_custom(func(n): return n.get_parent().name == "ChairProp")
+		if indexx >= 0:
+			var chair_prop := hit_box.get_child(0).get_overlapping_areas()[indexx].get_parent() as ChairProp
+			var chair_item := chair_prop.get_chair_and_queue_free()
+
+			item_controller.add_item(chair_item)
+			item_controller.equip_item(item_controller.all_items.size() - 1)
+
+			
 		changeAnimation("lightAttack")
 		if grounded:
 			doAttackCheckCombos("L")
@@ -470,4 +479,3 @@ func _unhandled_input(event: InputEvent) -> void:
 		elif event.keycode in [KEY_0, KEY_Q]:
 			item_controller.unequip_current_item()
 			is_item_equipped = false
-

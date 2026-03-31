@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://c3wj1788t13bc"]
+
+[ext_resource type="Script" uid="uid://23acquhoaid0" path="res://Items/chair/chair_item_node.gd" id="1_w7bcf"]
+[ext_resource type="Texture2D" uid="uid://dhkmarsspy0c" path="res://Items/chair/chair_sprite.webp" id="2_7x0wu"]
+
+[node name="ChairItem" type="Node2D"]
+script = ExtResource("1_w7bcf")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("2_7x0wu")

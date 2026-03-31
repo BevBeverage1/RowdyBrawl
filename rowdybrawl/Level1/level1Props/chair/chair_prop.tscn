@@ -1,0 +1,22 @@
+[gd_scene load_steps=5 format=3 uid="uid://xhr53n02vutg"]
+
+[ext_resource type="PackedScene" uid="uid://d0tuibbgirjc6" path="res://Level1/level1Props/prop.tscn" id="1_yh76n"]
+[ext_resource type="Script" uid="uid://nynsu6wpp12v" path="res://Level1/level1Props/chair/chair_prop.gd" id="2_idhc0"]
+[ext_resource type="Texture2D" uid="uid://dhkmarsspy0c" path="res://Items/chair/chair_sprite.webp" id="2_tsv1l"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_idhc0"]
+size = Vector2(59, 76)
+
+[node name="ChairProp" instance=ExtResource("1_yh76n")]
+script = ExtResource("2_idhc0")
+
+[node name="Sprite" type="Sprite2D" parent="propSprites" index="0"]
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("2_tsv1l")
+
+[node name="PickupArea" type="Area2D" parent="." index="1"]
+collision_layer = 5
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PickupArea" index="0"]
+shape = SubResource("RectangleShape2D_idhc0")
