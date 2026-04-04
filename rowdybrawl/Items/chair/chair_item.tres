@@ -1,10 +1,11 @@
-[gd_resource type="Resource" script_class="PlayerItem" load_steps=3 format=3 uid="uid://6265qwevyyp0"]
+[gd_resource type="Resource" script_class="ChairPlayerItem" load_steps=3 format=3 uid="uid://6265qwevyyp0"]
 
-[ext_resource type="Script" uid="uid://55a37mrx3qko" path="res://Items/player_item.gd" id="1_qqe7l"]
 [ext_resource type="PackedScene" uid="uid://c3wj1788t13bc" path="res://Items/chair/chair_item_node.tscn" id="1_tdm5k"]
+[ext_resource type="Script" uid="uid://2h2qfocidb4e" path="res://Items/chair/chair_item.gd" id="2_tdm5k"]
 
 [resource]
-script = ExtResource("1_qqe7l")
+script = ExtResource("2_tdm5k")
+health_points = 3
 item_name = "Chair"
 item_scene = ExtResource("1_tdm5k")
 metadata/_custom_type_script = "uid://55a37mrx3qko"
