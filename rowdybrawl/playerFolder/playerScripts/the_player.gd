@@ -32,22 +32,23 @@ const ROWDY_BRAWL_VICTORY_THEME = preload("uid://yblfi7yn551r")
 
 var enemy_inattack_range = false
 var enemy_attack_cooldown = true
-var health = 100
+@export_category("Starting Stats")
+@export var health = 100
 var player_alive = true
 var stun_timer := 0.0
 
 var facingDir = 1
-var maxSpeed = 250
-var accelaration = 20
-var airAccelaration = 1
-var groundFriction = 15   # these set up basic ground movement
+@export var maxSpeed = 250
+@export var accelaration = 20
+@export var airAccelaration = 1
+@export var groundFriction = 15   # these set up basic ground movement
 var yReductionPercent = 0.7
 
 var playerYPosition : float = 0.0
 var playerYVelocity : float = 0.0 # to handle movement in the (half-fake) Z direction
 
 var grounded = true                # handles jumping and falling
-var jumpVelocity : float = 400      
+@export var jumpVelocity : float = 400      
 var gravity: int = 9.8
 
 var attackBusyTimer : float = 0
@@ -173,6 +174,9 @@ func _physics_process(delta: float) -> void:     # _physics_process runs in fixe
 	if playerYPosition > 500:
 		playerBody.collision_mask = 2
 		playerBody.collision_layer = 2
+	else:
+		playerBody.collision_layer = 1
+		playerBody.collision_mask = 17
 	#rich_text_label.text = str(playerBody.collision_mask)
 	
 #	Z ordering bs to make it LOOK like the player is moving all 3D-like

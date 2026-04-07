@@ -94,12 +94,12 @@ func _physics_process(delta: float) -> void:
 		land()
 	
 #	disables ground collision when high enough in the air
-	if yPosition > 500:
-		#set_collision_layer_value(1, false)
-		#set_collision_layer_value(2, true)
+	# if yPosition > 500:
+	# 	#set_collision_layer_value(1, false)
+	# 	#set_collision_layer_value(2, true)
 		
-		set_collision_layer_value(5, false)
-		set_collision_layer_value(2, true)
+	# 	set_collision_layer_value(5, false)
+	# 	set_collision_layer_value(2, true)
 	
 	if (global_position.y < RenderingServer.CANVAS_ITEM_Z_MAX and global_position.y > RenderingServer.CANVAS_ITEM_Z_MIN):
 		animated_sprite_2d.z_index = int(global_position.y)
