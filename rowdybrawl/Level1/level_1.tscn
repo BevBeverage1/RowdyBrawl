@@ -1,13 +1,14 @@
-[gd_scene load_steps=17 format=3 uid="uid://cqq8uovueylvg"]
+[gd_scene load_steps=18 format=3 uid="uid://cqq8uovueylvg"]
 
 [ext_resource type="PackedScene" uid="uid://b5c8708romg66" path="res://playerFolder/the_player.tscn" id="1_dgsmt"]
 [ext_resource type="Script" uid="uid://b16sfvefc1rxk" path="res://Level1/level_1.gd" id="1_qtbmi"]
 [ext_resource type="Texture2D" uid="uid://byohiugj7t85y" path="res://Level1/levelSprites/level1Screen1Larger.png" id="2_im851"]
-[ext_resource type="PackedScene" uid="uid://big3b2x1lv5lx" path="res://Level1/enemyEncounter/enemy_encounter_1.tscn" id="5_2h3pg"]
 [ext_resource type="PackedScene" uid="uid://revtuuauqf2c" path="res://mainMenu/color_rect.tscn" id="5_opkmy"]
-[ext_resource type="PackedScene" uid="uid://boarn0aagqgfp" path="res://Level1/enemyEncounter/enemy_encounter_2.tscn" id="6_i80g2"]
-[ext_resource type="PackedScene" uid="uid://dogk62sgnigq" path="res://Level1/enemyEncounter/enemy_encounter_3.tscn" id="7_2h3pg"]
+[ext_resource type="PackedScene" uid="uid://biisl0tjeljhs" path="res://Level1/level1EnemyEncounters/enemyEncounter/enemy_encounter.tscn" id="6_opkmy"]
+[ext_resource type="Script" uid="uid://b1edudei1wrpy" path="res://Level1/level1EnemyEncounters/enemyEncounter/encounter_round.gd" id="7_jvwuh"]
+[ext_resource type="Resource" uid="uid://cmd1ubmo5tl53" path="res://Level1/level1EnemyEncounters/enemyEncounter1/encounter1_round1.tres" id="8_2okni"]
 [ext_resource type="PackedScene" uid="uid://d3p53ex44txe2" path="res://Items/gun/gun_collectible.tscn" id="8_i80g2"]
+[ext_resource type="Resource" uid="uid://dyf70aiph8xu1" path="res://Level1/level1EnemyEncounters/enemyEncounter1/encounter1_round2.tres" id="9_fqvtk"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_im851"]
 size = Vector2(867, 85)
@@ -145,14 +146,21 @@ offset_right = -384.3266
 offset_bottom = -800.2106
 scale = Vector2(48.334335, 33.141342)
 
-[node name="enemyEncounter1" parent="." instance=ExtResource("5_2h3pg")]
-position = Vector2(766, 39)
-
-[node name="enemyEncounter2" parent="." instance=ExtResource("6_i80g2")]
-position = Vector2(3132, 53)
-
-[node name="enemyEncounter3" parent="." instance=ExtResource("7_2h3pg")]
-position = Vector2(1911, 67)
-
 [node name="Collectible" parent="." instance=ExtResource("8_i80g2")]
 position = Vector2(1775, 163)
+
+[node name="EnemyEncounter" parent="." instance=ExtResource("6_opkmy")]
+position = Vector2(511, 74)
+rounds = Array[ExtResource("7_jvwuh")]([ExtResource("8_2okni"), ExtResource("9_fqvtk")])
+
+[node name="Spawn1" type="Marker2D" parent="EnemyEncounter"]
+position = Vector2(334, -60)
+
+[node name="Spawn2" type="Marker2D" parent="EnemyEncounter"]
+position = Vector2(329, 157)
+
+[node name="Spawn3" type="Marker2D" parent="EnemyEncounter"]
+position = Vector2(-334, 152)
+
+[node name="Spawn4" type="Marker2D" parent="EnemyEncounter"]
+position = Vector2(-339, -36)
