@@ -1,9 +1,0 @@
-[gd_resource type="Resource" script_class="EncounterRound" load_steps=3 format=3 uid="uid://cmd1ubmo5tl53"]
-
-[ext_resource type="Script" uid="uid://b1edudei1wrpy" path="res://Level1/level1EnemyEncounters/enemyEncounter/encounter_round.gd" id="1_f2j61"]
-[ext_resource type="PackedScene" uid="uid://c80ia60x3xwwn" path="res://Level1/level1Enemies/enemyJobApplication/job_application.tscn" id="1_ferpo"]
-
-[resource]
-script = ExtResource("1_f2j61")
-_enemies_to_spawn = Array[PackedScene]([ExtResource("1_ferpo"), ExtResource("1_ferpo")])
-metadata/_custom_type_script = "uid://b1edudei1wrpy"

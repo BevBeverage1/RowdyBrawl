@@ -1,9 +1,6 @@
 extends CharacterBody2D
 class_name Enemy
 
-
-signal died()
-
 # import some nodes for messin' with
 @onready var animated_sprite_2d: AnimatedSprite2D = $enemy_hitbox/AnimatedSprite2D
 @onready var enemy_hitbox: Area2D = $enemy_hitbox
@@ -46,9 +43,9 @@ var ai = aiStates.IDLE
 var goRight := randi_range(0,1)
 
 # getting attacked
-@export var health = 100
 var knockback_velocity: Vector2 = Vector2.ZERO
 var stun_timer: float = 0.0
+var health = 100
 var enemy_alive = true
 var removeTimer := 3.0
 
@@ -95,15 +92,14 @@ func _physics_process(delta: float) -> void:
 	
 	if yPosition <= 0 and !grounded:
 		land()
-		
 	
-	#	disables ground collision when high enough in the air
-		# if yPosition > 500:
-		# 	#set_collision_layer_value(1, false)
-		# 	#set_collision_layer_value(2, true)
-			
-		# 	set_collision_layer_value(5, false)
-		# 	set_collision_layer_value(2, true)
+#	disables ground collision when high enough in the air
+	if yPosition > 500:
+		#set_collision_layer_value(1, false)
+		#set_collision_layer_value(2, true)
+		
+		set_collision_layer_value(5, false)
+		set_collision_layer_value(2, true)
 	
 	if (global_position.y < RenderingServer.CANVAS_ITEM_Z_MAX and global_position.y > RenderingServer.CANVAS_ITEM_Z_MIN):
 		animated_sprite_2d.z_index = int(global_position.y)
@@ -111,11 +107,27 @@ func _physics_process(delta: float) -> void:
 	
 	enemy_hitbox.position.y = -(yPosition / 100)
 	
-	if canMove():
+	if stun_timer <= 0:
+		if isCloseToTarget() and ai == aiStates.CHASE:
+			ai = aiStates.ATTACK
+			targetPos = Vector2.ZERO
+			# make the enemy enter an attacking state
+			# change ai to be an Enum that will sorta decide the ai actions	
+		match ai:
+			aiStates.IDLE:
+				aiIdleFunction()
+			aiStates.CHASE:
+				aiChaseFunction()
+			aiStates.ATTACK:
+				aiAttackFunction(delta)
+	
+	if targetPos != Vector2.ZERO:
+		moveDirection = (targetPos - global_position).normalized()
+	else:
+		moveDirection = Vector2.ZERO
+		
+	if moveDirection != Vector2.ZERO and grounded and canMove():
 		accelarateInDirection()
-
-	facingDir = -1 if playerRef and global_position.direction_to(playerRef.playerBody.global_position).x < 0 else 1
-
 	
 	move_and_slide()
 
@@ -168,8 +180,6 @@ func die():
 	applyKnockback(Vector2(.3,-1), 5000)
 	playSound(ENEMY_DIE_SOUND_EFFECT_DEFAULT, 0.3, 1)
 	enemy_collision.set_deferred("disabled", true)		
-	died.emit()
-	
 func removeFromScene():
 	call_deferred("queue_free")
 
@@ -220,7 +230,11 @@ func canMove() -> bool:
 func accelarateInDirection():
 	if abs((moveDirection.x * (accelaration + friction)) + velocity.x) <= maxSpeed:
 		velocity.x += moveDirection.x * (accelaration + friction)
-
+		if playerRef.playerBody.global_position.x - global_position.x < 0:
+			facingDir = -1
+		else:
+			facingDir = 1
+	
 	if abs((moveDirection.y * (accelaration + friction)) + velocity.y) <= maxSpeed * yReductionAmount:
 		velocity.y += moveDirection.y * (accelaration + friction) * yReductionAmount
 
@@ -257,9 +271,6 @@ func setRelativeTargetPos(relativeTargetPos: Vector2):
 	print("going to: " + str(targetPos))
 
 	
-func set_stunned(time: float):
-	stun_timer = time
-	stun_indicator.visible = true
 	
 
 func isCloseToTarget(range : float = 15) -> bool:
@@ -315,4 +326,3 @@ func _on_detection_area_body_entered(body: Node2D) -> void:
 	#if body.get_parent() is player:
 		#playerRef = body.get_parent()
 		#ai = aiStates.CHASE
-

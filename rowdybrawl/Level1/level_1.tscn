@@ -1,9 +1,12 @@
-[gd_scene load_steps=18 format=3 uid="uid://cqq8uovueylvg"]
+[gd_scene load_steps=21 format=3 uid="uid://cqq8uovueylvg"]
 
 [ext_resource type="PackedScene" uid="uid://b5c8708romg66" path="res://playerFolder/the_player.tscn" id="1_dgsmt"]
 [ext_resource type="Script" uid="uid://b16sfvefc1rxk" path="res://Level1/level_1.gd" id="1_qtbmi"]
 [ext_resource type="Texture2D" uid="uid://byohiugj7t85y" path="res://Level1/levelSprites/level1Screen1Larger.png" id="2_im851"]
+[ext_resource type="PackedScene" uid="uid://big3b2x1lv5lx" path="res://Level1/enemyEncounter/enemy_encounter_1.tscn" id="5_2h3pg"]
 [ext_resource type="PackedScene" uid="uid://revtuuauqf2c" path="res://mainMenu/color_rect.tscn" id="5_opkmy"]
+[ext_resource type="PackedScene" uid="uid://boarn0aagqgfp" path="res://Level1/enemyEncounter/enemy_encounter_2.tscn" id="6_i80g2"]
+[ext_resource type="PackedScene" uid="uid://dogk62sgnigq" path="res://Level1/enemyEncounter/enemy_encounter_3.tscn" id="7_2h3pg"]
 [ext_resource type="PackedScene" uid="uid://d3p53ex44txe2" path="res://Items/gun/gun_collectible.tscn" id="8_i80g2"]
 [ext_resource type="PackedScene" uid="uid://bhe8dmp47prd3" path="res://CameraSystem/camera_follow_path.tscn" id="9_jvwuh"]
 [ext_resource type="PackedScene" uid="uid://glcguyxiguua" path="res://CameraSystem/camera_follow_path_section.tscn" id="10_2okni"]
@@ -152,6 +155,15 @@ offset_top = -854.0
 offset_right = -384.3266
 offset_bottom = -800.2106
 scale = Vector2(48.334335, 33.141342)
+
+[node name="enemyEncounter1" parent="." instance=ExtResource("5_2h3pg")]
+position = Vector2(766, 39)
+
+[node name="enemyEncounter2" parent="." instance=ExtResource("6_i80g2")]
+position = Vector2(3132, 53)
+
+[node name="enemyEncounter3" parent="." instance=ExtResource("7_2h3pg")]
+position = Vector2(1911, 67)
 
 [node name="Collectible" parent="." instance=ExtResource("8_i80g2")]
 position = Vector2(1775, 163)
