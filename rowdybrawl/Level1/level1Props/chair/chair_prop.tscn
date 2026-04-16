@@ -1,16 +1,54 @@
-[gd_scene load_steps=5 format=3 uid="uid://xhr53n02vutg"]
+[gd_scene load_steps=7 format=3 uid="uid://xhr53n02vutg"]
 
 [ext_resource type="PackedScene" uid="uid://d0tuibbgirjc6" path="res://Level1/level1Props/prop.tscn" id="1_yh76n"]
 [ext_resource type="Script" uid="uid://nynsu6wpp12v" path="res://Level1/level1Props/chair/chair_prop.gd" id="2_idhc0"]
 [ext_resource type="Texture2D" uid="uid://dhkmarsspy0c" path="res://Items/chair/chair_sprite.webp" id="2_tsv1l"]
 
+[sub_resource type="Shader" id="Shader_tsv1l"]
+code = "shader_type canvas_item;
+
+uniform vec3 band_color : source_color = vec3(1.0, 1.0, 0.0);
+uniform float band_thickness : hint_range(0.02, 0.34, 0.01) = 0.2;
+uniform bool vertical_scroll = false;
+uniform float speed : hint_range(0.14, 1.5, 0.02) = 0.3;
+uniform bool reverse = false;
+
+void fragment() {
+	float r = reverse ? -1.0 : 1.0;
+	float progress = fract(TIME * speed * r);
+
+	float band_thickness_half = band_thickness / 2.0;
+	float t = mix(-band_thickness, 1.0 + band_thickness_half, progress);
+	float band_start = t - band_thickness_half;
+	float band_end = t + band_thickness_half;
+
+	float t2 = vertical_scroll ? UV.y : UV.x;
+
+	if (t2 >= band_start && t2 <= band_end) {
+		COLOR.rgb = COLOR.rgb + band_color;
+	}
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_idhc0"]
+shader = SubResource("Shader_tsv1l")
+shader_parameter/band_color = Color(1.1281654, 1.353256, 0, 1)
+shader_parameter/band_thickness = 0.2
+shader_parameter/vertical_scroll = false
+shader_parameter/speed = 0.59999999031436
+shader_parameter/reverse = false
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_idhc0"]
 size = Vector2(59, 76)
 
 [node name="ChairProp" instance=ExtResource("1_yh76n")]
+material = SubResource("ShaderMaterial_idhc0")
 script = ExtResource("2_idhc0")
 
+[node name="propSprites" parent="." index="0"]
+use_parent_material = true
+
 [node name="Sprite" type="Sprite2D" parent="propSprites" index="0"]
+use_parent_material = true
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("2_tsv1l")
 
