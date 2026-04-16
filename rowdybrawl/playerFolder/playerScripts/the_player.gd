@@ -12,7 +12,7 @@ class_name player   # the tutorial doesnt talk about this(because technically th
 @onready var sound_track_1: AudioStreamPlayer2D = $playerBody/soundTrack1
 @onready var player_action_animator: AnimationPlayer = $playerBody/playerActionAnimator
 @onready var music_manager: musicManager = $playerBody/musicManager
-@onready var camera_controller: cameraController = $cameraController
+# @onready var camera_controller: cameraController = $cameraController
 @onready var item_controller: ItemController = %ItemController
 
 # load up the player attack hitboxes
@@ -301,14 +301,14 @@ func specialAttack():
 	player_action_animator.play("specialAttack")
 	stun_timer = 0.4
 	specialMeter = 0
-	camera_controller.stop = true
-	camera_controller.trackPos.x += facingDir * 175
+	# camera_controller.stop = true
+	# camera_controller.trackPos.x += facingDir * 175
 func specialAttackTP():
 	playerBody.global_position += Vector2(facingDir * 350,0)
-	if abs(camera_controller.trackPos.x - playerBody.global_position.x) > 300:
-		camera_controller.trackPos.x = playerBody.global_position.x
-func specialAttackDone():
-	camera_controller.stop = false
+	# if abs(camera_controller.trackPos.x - playerBody.global_position.x) > 300:
+		# camera_controller.trackPos.x = playerBody.global_position.x
+# func specialAttackDone():
+	# camera_controller.stop = false
 # combat stuff in general
 func take_hit(damage: int, knockback_dir: Vector2, knockback_strength: float, stun_duration: float, attacker : Enemy = null) -> void:
 	if attacker != null and parryTimer > 0:
