@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://bto47b1qeehvq"]
+[gd_scene load_steps=30 format=3 uid="uid://bto47b1qeehvq"]
 
 [ext_resource type="Texture2D" uid="uid://b3lxef86dfk7y" path="res://sprites/placeholder for enemy sprite.png" id="1_7p1mj"]
 [ext_resource type="Script" uid="uid://lbc87ih2wosb" path="res://Level1/level1Enemies/parentEnemy/enemy.gd" id="1_md0e3"]
@@ -281,6 +281,9 @@ _data = {
 
 [sub_resource type="AudioStreamPolyphonic" id="AudioStreamPolyphonic_fhhpo"]
 
+[sub_resource type="BlackboardPlan" id="BlackboardPlan_7dq3j"]
+binding/player = NodePath("..:playerRef")
+
 [node name="enemy" type="CharacterBody2D"]
 collision_layer = 16
 collision_mask = 16
@@ -333,6 +336,9 @@ modulate = Color(1, 1, 1, 0.43137255)
 z_index = -1
 position = Vector2(0, -11)
 texture = ExtResource("4_fhhpo")
+
+[node name="BTPlayer" type="BTPlayer" parent="."]
+blackboard_plan = SubResource("BlackboardPlan_7dq3j")
 
 [connection signal="body_entered" from="detection_area" to="." method="_on_detection_area_body_entered"]
 [connection signal="finished" from="soundTrack1" to="." method="_on_sound_track_1_finished"]

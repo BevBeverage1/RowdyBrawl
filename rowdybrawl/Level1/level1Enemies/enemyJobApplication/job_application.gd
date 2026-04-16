@@ -7,8 +7,8 @@ var JOB_APPLICATION_SLAM = load("uid://5e4q3284mm0e")
 var currentAttack : hitBox
 func _ready() -> void:
 	hitRate = 1
-	health = 140
 	super()
+	
 
 #func _process(delta: float) -> void:
 	#pass
@@ -26,10 +26,7 @@ func aiAttackFunction(delta :float):
 		if canAttack():
 			var currentAttack = spawnAttack(JOB_APPLICATION_SLAM, 10, 1, 0.35, 0.1)
 			currentAttack.zReach = 20
-			if facingDir == 1:
-				job_application_animator.play("jobApplicationSlam")
-			else:
-				job_application_animator.play("jobApplicationSlamLeft")
+			
 			hitTimer = hitRate
 			ai = aiStates.CHASE
 			goRight = randi_range(0,1)
@@ -41,3 +38,9 @@ func take_hit(damage: int, knockback_dir: Vector2, knockback_strength: float, st
 	job_application_animator.play("RESET")
 	job_application_animator.play("hurt")
 	super(damage, knockback_dir, knockback_strength, stun_duration, attacker)
+
+func animate_attack():
+	if facingDir == 1:
+		job_application_animator.play("jobApplicationSlam")
+	else:
+		job_application_animator.play("jobApplicationSlamLeft")

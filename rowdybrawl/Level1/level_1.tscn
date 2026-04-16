@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://biisl0tjeljhs" path="res://Level1/level1EnemyEncounters/enemyEncounter/enemy_encounter.tscn" id="6_opkmy"]
 [ext_resource type="Script" uid="uid://b1edudei1wrpy" path="res://Level1/level1EnemyEncounters/enemyEncounter/encounter_round.gd" id="7_jvwuh"]
 [ext_resource type="Resource" uid="uid://cmd1ubmo5tl53" path="res://Level1/level1EnemyEncounters/enemyEncounter1/encounter1_round1.tres" id="8_2okni"]
-[ext_resource type="PackedScene" uid="uid://d3p53ex44txe2" path="res://Items/gun/gun_collectible.tscn" id="8_i80g2"]
+[ext_resource type="PackedScene" path="res://Items/gun/gun_collectible.tscn" id="8_i80g2"]
 [ext_resource type="Resource" uid="uid://dyf70aiph8xu1" path="res://Level1/level1EnemyEncounters/enemyEncounter1/encounter1_round2.tres" id="9_fqvtk"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_im851"]
@@ -154,13 +154,13 @@ position = Vector2(511, 74)
 rounds = Array[ExtResource("7_jvwuh")]([ExtResource("8_2okni"), ExtResource("9_fqvtk")])
 
 [node name="Spawn1" type="Marker2D" parent="EnemyEncounter"]
-position = Vector2(334, -60)
+position = Vector2(20, -30)
 
 [node name="Spawn2" type="Marker2D" parent="EnemyEncounter"]
-position = Vector2(329, 157)
+position = Vector2(27, 198)
 
 [node name="Spawn3" type="Marker2D" parent="EnemyEncounter"]
-position = Vector2(-334, 152)
+position = Vector2(-213, 204)
 
 [node name="Spawn4" type="Marker2D" parent="EnemyEncounter"]
-position = Vector2(-339, -36)
+position = Vector2(-218, -15)

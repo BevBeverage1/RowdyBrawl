@@ -1,8 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://c80ia60x3xwwn"]
+[gd_scene load_steps=15 format=3 uid="uid://c80ia60x3xwwn"]
 
 [ext_resource type="PackedScene" uid="uid://bto47b1qeehvq" path="res://Level1/level1Enemies/parentEnemy/enemy.tscn" id="1_j1xia"]
 [ext_resource type="Script" uid="uid://cgwq0jdqqux6a" path="res://Level1/level1Enemies/enemyJobApplication/job_application.gd" id="2_0gdpn"]
 [ext_resource type="Texture2D" uid="uid://db4sudamdniem" path="res://Level1/level1Enemies/enemyJobApplication/jobApplication.png" id="3_s0wr4"]
+[ext_resource type="BehaviorTree" uid="uid://dkf30jdamw7n0" path="res://Level1/level1Enemies/enemyJobApplication/job_application_ai.tres" id="4_cr6rf"]
+[ext_resource type="PackedScene" uid="uid://5e4q3284mm0e" path="res://Level1/level1Enemies/enemyJobApplication/job_application_slam.tscn" id="5_m8d8v"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_s0wr4"]
 size = Vector2(52, 67)
@@ -232,10 +234,24 @@ _data = {
 &"jobApplicationSlamLeft": SubResource("Animation_m8d8v")
 }
 
+[sub_resource type="BlackboardPlan" id="BlackboardPlan_cr6rf"]
+var/attack_list/name = &"attack_list"
+var/attack_list/type = 28
+var/attack_list/value = [ExtResource("5_m8d8v")]
+var/attack_list/hint = 0
+var/attack_list/hint_string = ""
+var/attack_position_player_x_offset/name = &"attack_position_player_x_offset"
+var/attack_position_player_x_offset/type = 3
+var/attack_position_player_x_offset/value = 75.0
+var/attack_position_player_x_offset/hint = 0
+var/attack_position_player_x_offset/hint_string = ""
+binding/player = NodePath("..:playerRef")
+
 [node name="jobApplication" instance=ExtResource("1_j1xia")]
 script = ExtResource("2_0gdpn")
 maxSpeed = 145.0
 accelaration = 6.7
+health = 120
 
 [node name="enemyCollision" parent="." index="1"]
 scale = Vector2(1.0385873, 0.8505853)
@@ -261,3 +277,7 @@ scale = Vector2(2.2955532, 1.0538179)
 libraries = {
 &"": SubResource("AnimationLibrary_cr6rf")
 }
+
+[node name="BTPlayer" parent="." index="7"]
+behavior_tree = ExtResource("4_cr6rf")
+blackboard_plan = SubResource("BlackboardPlan_cr6rf")
