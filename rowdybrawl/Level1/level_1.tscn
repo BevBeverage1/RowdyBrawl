@@ -1,14 +1,14 @@
-[gd_scene load_steps=18 format=3 uid="uid://cqq8uovueylvg"]
+[gd_scene load_steps=21 format=3 uid="uid://cqq8uovueylvg"]
 
 [ext_resource type="PackedScene" uid="uid://b5c8708romg66" path="res://playerFolder/the_player.tscn" id="1_dgsmt"]
 [ext_resource type="Script" uid="uid://b16sfvefc1rxk" path="res://Level1/level_1.gd" id="1_qtbmi"]
 [ext_resource type="Texture2D" uid="uid://byohiugj7t85y" path="res://Level1/levelSprites/level1Screen1Larger.png" id="2_im851"]
 [ext_resource type="PackedScene" uid="uid://revtuuauqf2c" path="res://mainMenu/color_rect.tscn" id="5_opkmy"]
-[ext_resource type="PackedScene" uid="uid://biisl0tjeljhs" path="res://Level1/level1EnemyEncounters/enemyEncounter/enemy_encounter.tscn" id="6_opkmy"]
-[ext_resource type="Script" uid="uid://b1edudei1wrpy" path="res://Level1/level1EnemyEncounters/enemyEncounter/encounter_round.gd" id="7_jvwuh"]
-[ext_resource type="Resource" uid="uid://cmd1ubmo5tl53" path="res://Level1/level1EnemyEncounters/enemyEncounter1/encounter1_round1.tres" id="8_2okni"]
-[ext_resource type="PackedScene" path="res://Items/gun/gun_collectible.tscn" id="8_i80g2"]
-[ext_resource type="Resource" uid="uid://dyf70aiph8xu1" path="res://Level1/level1EnemyEncounters/enemyEncounter1/encounter1_round2.tres" id="9_fqvtk"]
+[ext_resource type="PackedScene" uid="uid://boarn0aagqgfp" path="res://Level1/enemyEncounter/enemy_encounter_2.tscn" id="6_i80g2"]
+[ext_resource type="PackedScene" uid="uid://dogk62sgnigq" path="res://Level1/enemyEncounter/enemy_encounter_3.tscn" id="7_2h3pg"]
+[ext_resource type="PackedScene" uid="uid://d3p53ex44txe2" path="res://Items/gun/gun_collectible.tscn" id="8_i80g2"]
+[ext_resource type="PackedScene" uid="uid://bhe8dmp47prd3" path="res://CameraSystem/camera_follow_path.tscn" id="9_jvwuh"]
+[ext_resource type="PackedScene" uid="uid://glcguyxiguua" path="res://CameraSystem/camera_follow_path_section.tscn" id="10_2okni"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_im851"]
 size = Vector2(867, 85)
@@ -33,6 +33,15 @@ size = Vector2(4324, 72)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jvwuh"]
 size = Vector2(777.48883, 278.24)
+
+[sub_resource type="Curve2D" id="Curve2D_jvwuh"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 81, 30, 0, 0, 0, 0, 3546, 30)
+}
+point_count = 2
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2okni"]
+size = Vector2(1000, 750)
 
 [node name="Level1" type="Node2D"]
 script = ExtResource("1_qtbmi")
@@ -156,11 +165,29 @@ rounds = Array[ExtResource("7_jvwuh")]([ExtResource("8_2okni"), ExtResource("9_f
 [node name="Spawn1" type="Marker2D" parent="EnemyEncounter"]
 position = Vector2(20, -30)
 
-[node name="Spawn2" type="Marker2D" parent="EnemyEncounter"]
-position = Vector2(27, 198)
+[node name="Collectible" parent="." instance=ExtResource("8_i80g2")]
+position = Vector2(1775, 163)
 
-[node name="Spawn3" type="Marker2D" parent="EnemyEncounter"]
-position = Vector2(-213, 204)
+[node name="CameraFollowPath" parent="." node_paths=PackedStringArray("target_node") instance=ExtResource("9_jvwuh")]
+curve = SubResource("Curve2D_jvwuh")
+target_node = NodePath("../thePlayer/playerBody")
 
-[node name="Spawn4" type="Marker2D" parent="EnemyEncounter"]
-position = Vector2(-218, -15)
+[node name="Camera2D" type="Camera2D" parent="CameraFollowPath"]
+position = Vector2(635, 35)
+position_smoothing_enabled = true
+
+[node name="CameraFollowPathSection" parent="." node_paths=PackedStringArray("camera_follow_path") instance=ExtResource("10_2okni")]
+position = Vector2(635, 35)
+camera_follow_path = NodePath("../CameraFollowPath")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CameraFollowPathSection"]
+shape = SubResource("RectangleShape2D_2okni")
+
+[node name="CameraFollowPathSection2" parent="." node_paths=PackedStringArray("camera_follow_path") instance=ExtResource("10_2okni")]
+position = Vector2(2875, 70)
+camera_follow_path = NodePath("../CameraFollowPath")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CameraFollowPathSection2"]
+shape = SubResource("RectangleShape2D_2okni")
+
+[editable path="thePlayer"]

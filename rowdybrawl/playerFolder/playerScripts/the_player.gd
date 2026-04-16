@@ -12,7 +12,7 @@ class_name player   # the tutorial doesnt talk about this(because technically th
 @onready var sound_track_1: AudioStreamPlayer2D = $playerBody/soundTrack1
 @onready var player_action_animator: AnimationPlayer = $playerBody/playerActionAnimator
 @onready var music_manager: musicManager = $playerBody/musicManager
-@onready var camera_controller: cameraController = $cameraController
+# @onready var camera_controller: cameraController = $cameraController
 @onready var item_controller: ItemController = %ItemController
 
 # load up the player attack hitboxes
@@ -90,6 +90,15 @@ func _physics_process(delta: float) -> void:     # _physics_process runs in fixe
 		
 	# attacks and stuff
 	if Input.is_action_just_pressed("lightAttack") and canAttack():
+		var indexx: int = hit_box.get_child(0).get_overlapping_areas().find_custom(func(n): return n.get_parent().name == "ChairProp")
+		if indexx >= 0:
+			var chair_prop := hit_box.get_child(0).get_overlapping_areas()[indexx].get_parent() as ChairProp
+			var chair_item := chair_prop.get_chair_and_queue_free()
+
+			item_controller.add_item(chair_item)
+			item_controller.equip_item(item_controller.all_items.size() - 1)
+
+			
 		changeAnimation("lightAttack")
 		if grounded:
 			doAttackCheckCombos("L")
@@ -305,14 +314,14 @@ func specialAttack():
 	player_action_animator.play("specialAttack")
 	stun_timer = 0.4
 	specialMeter = 0
-	camera_controller.stop = true
-	camera_controller.trackPos.x += facingDir * 175
+	# camera_controller.stop = true
+	# camera_controller.trackPos.x += facingDir * 175
 func specialAttackTP():
 	playerBody.global_position += Vector2(facingDir * 350,0)
-	if abs(camera_controller.trackPos.x - playerBody.global_position.x) > 300:
-		camera_controller.trackPos.x = playerBody.global_position.x
-func specialAttackDone():
-	camera_controller.stop = false
+	# if abs(camera_controller.trackPos.x - playerBody.global_position.x) > 300:
+		# camera_controller.trackPos.x = playerBody.global_position.x
+# func specialAttackDone():
+	# camera_controller.stop = false
 # combat stuff in general
 func take_hit(damage: int, knockback_dir: Vector2, knockback_strength: float, stun_duration: float, attacker : Enemy = null) -> void:
 	if attacker != null and parryTimer > 0:
@@ -474,4 +483,3 @@ func _unhandled_input(event: InputEvent) -> void:
 		elif event.keycode in [KEY_0, KEY_Q]:
 			item_controller.unequip_current_item()
 			is_item_equipped = false
-

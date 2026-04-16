@@ -1,7 +1,6 @@
-[gd_scene load_steps=27 format=3 uid="uid://b5c8708romg66"]
+[gd_scene load_steps=26 format=3 uid="uid://b5c8708romg66"]
 
 [ext_resource type="Script" uid="uid://d1lb2i55l1d4y" path="res://playerFolder/playerScripts/the_player.gd" id="1_qsbax"]
-[ext_resource type="PackedScene" uid="uid://b0py0r48mo2wi" path="res://playerFolder/camera_manager.tscn" id="3_olns3"]
 [ext_resource type="Texture2D" uid="uid://dnadcguif2xdk" path="res://playerFolder/playerSprites/shadowPixel.png" id="3_opa1r"]
 [ext_resource type="Texture2D" uid="uid://vn6tav3ndfqw" path="res://playerFolder/playerSprites/Sprite-0001-Sheet.png" id="4_y3gru"]
 [ext_resource type="PackedScene" uid="uid://chgbc048ycjqu" path="res://Level1/level1Soundtrack/music_manager.tscn" id="5_6sxll"]
@@ -483,8 +482,6 @@ root_node = NodePath("../..")
 libraries = {
 &"": SubResource("AnimationLibrary_y3gru")
 }
-
-[node name="cameraController" parent="." instance=ExtResource("3_olns3")]
 
 [connection signal="animation_finished" from="playerBody/hitBox/playerSprite" to="." method="_on_player_sprite_animation_finished"]
 [connection signal="animation_looped" from="playerBody/hitBox/playerSprite" to="." method="_on_player_sprite_animation_looped"]
