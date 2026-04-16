@@ -1,12 +1,16 @@
-[gd_scene load_steps=18 format=3 uid="uid://cqq8uovueylvg"]
+[gd_scene load_steps=23 format=3 uid="uid://cqq8uovueylvg"]
 
 [ext_resource type="PackedScene" uid="uid://b5c8708romg66" path="res://playerFolder/the_player.tscn" id="1_dgsmt"]
 [ext_resource type="Script" uid="uid://b16sfvefc1rxk" path="res://Level1/level_1.gd" id="1_qtbmi"]
 [ext_resource type="Texture2D" uid="uid://byohiugj7t85y" path="res://Level1/levelSprites/level1Screen1Larger.png" id="2_im851"]
 [ext_resource type="PackedScene" uid="uid://revtuuauqf2c" path="res://mainMenu/color_rect.tscn" id="5_opkmy"]
 [ext_resource type="PackedScene" uid="uid://d3p53ex44txe2" path="res://Items/gun/gun_collectible.tscn" id="8_i80g2"]
+[ext_resource type="PackedScene" uid="uid://biisl0tjeljhs" path="res://Level1/level1EnemyEncounters/enemyEncounter/enemy_encounter.tscn" id="8_jvwuh"]
+[ext_resource type="Script" uid="uid://b1edudei1wrpy" path="res://Level1/level1EnemyEncounters/enemyEncounter/encounter_round.gd" id="9_fqvtk"]
 [ext_resource type="PackedScene" uid="uid://bhe8dmp47prd3" path="res://CameraSystem/camera_follow_path.tscn" id="9_jvwuh"]
 [ext_resource type="PackedScene" uid="uid://glcguyxiguua" path="res://CameraSystem/camera_follow_path_section.tscn" id="10_2okni"]
+[ext_resource type="Resource" uid="uid://cmd1ubmo5tl53" path="res://Level1/level1EnemyEncounters/enemyEncounter1/encounter1_round1.tres" id="10_kvwx4"]
+[ext_resource type="Resource" uid="uid://dyf70aiph8xu1" path="res://Level1/level1EnemyEncounters/enemyEncounter1/encounter1_round2.tres" id="11_u0gep"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_im851"]
 size = Vector2(867, 85)
@@ -39,7 +43,10 @@ _data = {
 point_count = 2
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2okni"]
-size = Vector2(1000, 750)
+size = Vector2(1099, 750)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fqvtk"]
+size = Vector2(85, 768)
 
 [node name="Level1" type="Node2D"]
 script = ExtResource("1_qtbmi")
@@ -56,7 +63,7 @@ fit_content = true
 autowrap_mode = 0
 
 [node name="thePlayer" parent="." instance=ExtResource("1_dgsmt")]
-position = Vector2(89, 91)
+position = Vector2(-132, 98)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 z_index = -4096
@@ -164,18 +171,43 @@ target_node = NodePath("../thePlayer/playerBody")
 position = Vector2(635, 35)
 position_smoothing_enabled = true
 
-[node name="CameraFollowPathSection" parent="." node_paths=PackedStringArray("camera_follow_path") instance=ExtResource("10_2okni")]
+[node name="CameraFollowPathSection" parent="CameraFollowPath" node_paths=PackedStringArray("camera_follow_path") instance=ExtResource("10_2okni")]
 position = Vector2(635, 35)
-camera_follow_path = NodePath("../CameraFollowPath")
+camera_follow_path = NodePath("..")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CameraFollowPathSection"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CameraFollowPath/CameraFollowPathSection"]
+position = Vector2(-37.5, 0)
 shape = SubResource("RectangleShape2D_2okni")
 
-[node name="CameraFollowPathSection2" parent="." node_paths=PackedStringArray("camera_follow_path") instance=ExtResource("10_2okni")]
+[node name="CameraFollowPathSection2" parent="CameraFollowPath" node_paths=PackedStringArray("camera_follow_path") instance=ExtResource("10_2okni")]
 position = Vector2(2875, 70)
-camera_follow_path = NodePath("../CameraFollowPath")
+camera_follow_path = NodePath("..")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CameraFollowPathSection2"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CameraFollowPath/CameraFollowPathSection2"]
 shape = SubResource("RectangleShape2D_2okni")
+
+[node name="EnemyEncounter" parent="." instance=ExtResource("8_jvwuh")]
+position = Vector2(606, 75)
+rounds = Array[ExtResource("9_fqvtk")]([ExtResource("10_kvwx4"), ExtResource("11_u0gep")])
+
+[node name="StaticBody2D" type="StaticBody2D" parent="EnemyEncounter"]
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyEncounter/StaticBody2D"]
+position = Vector2(-560, -52)
+shape = SubResource("RectangleShape2D_fqvtk")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="EnemyEncounter/StaticBody2D"]
+position = Vector2(554, -45)
+shape = SubResource("RectangleShape2D_fqvtk")
+
+[node name="Marker2D" type="Marker2D" parent="EnemyEncounter"]
+position = Vector2(43, -26)
+
+[node name="Marker2D2" type="Marker2D" parent="EnemyEncounter"]
+position = Vector2(88, 79)
+
+[node name="Marker2D3" type="Marker2D" parent="EnemyEncounter"]
+position = Vector2(81, 227)
 
 [editable path="thePlayer"]

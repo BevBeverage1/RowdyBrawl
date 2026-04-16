@@ -30,7 +30,7 @@ func _ready() -> void:
 		boundaries = get_child(get_children().find_custom(func(c): return c is StaticBody2D))
 		boundaries.collision_layer = 0
 		encounter_ended.connect(boundaries.queue_free)
-		encounter_activated.connect(func(): boundaries.collision_layer = 1)
+		encounter_activated.connect(func(): boundaries.collision_layer = 3)
 
 
 func spawnCurrentRound():

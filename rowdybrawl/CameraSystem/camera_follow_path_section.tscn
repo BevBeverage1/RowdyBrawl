@@ -3,4 +3,5 @@
 [ext_resource type="Script" uid="uid://doun2s82yqtim" path="res://CameraSystem/camera_path_section.gd" id="1_fi3hg"]
 
 [node name="CameraFollowPathSection" type="Area2D"]
+collision_mask = 3
 script = ExtResource("1_fi3hg")
