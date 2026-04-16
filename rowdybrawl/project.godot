@@ -19,6 +19,10 @@ config/icon="res://Level1/level1Enemies/parentEnemy/icon.svg"
 
 buses/default_bus_layout="res://playerFolder/playerSounds/default_bus_layout.tres"
 
+[autoload]
+
+GameGlobals="*res://miscStuff/game_globals.gd"
+
 [input]
 
 left={

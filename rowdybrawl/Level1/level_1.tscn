@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://cqq8uovueylvg"]
+[gd_scene load_steps=26 format=3 uid="uid://cqq8uovueylvg"]
 
 [ext_resource type="PackedScene" uid="uid://b5c8708romg66" path="res://playerFolder/the_player.tscn" id="1_dgsmt"]
 [ext_resource type="Script" uid="uid://b16sfvefc1rxk" path="res://Level1/level_1.gd" id="1_qtbmi"]
@@ -47,6 +47,38 @@ size = Vector2(1099, 750)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fqvtk"]
 size = Vector2(85, 768)
+
+[sub_resource type="GDScript" id="GDScript_fqvtk"]
+resource_name = "HealthBar"
+script/source = "extends ColorRect
+
+func _ready() -> void:
+	GameGlobals.player_hit.connect(_on_player_hit)
+	
+
+func _on_player_hit(player_health: float):
+	$GrayBar/GreenBar/Label.text = \"%d\" % player_health
+	$GrayBar/GreenBar.size.x = 2 * player_health
+"
+
+[sub_resource type="LabelSettings" id="LabelSettings_kvwx4"]
+line_spacing = 0.0
+font_size = 20
+outline_size = 5
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="GDScript" id="GDScript_kvwx4"]
+resource_name = "MeterBar"
+script/source = "extends ColorRect
+
+func _ready() -> void:
+	GameGlobals.ult_meter_changed.connect(_on_ult_meter_changed)
+	
+
+func _on_ult_meter_changed(ult_meter: float):
+	$GrayBar/BlueBar/Label.text = \"%.0f%%\" % (ult_meter * 100)
+	$GrayBar/BlueBar.size.x = 200 * ult_meter
+"
 
 [node name="Level1" type="Node2D"]
 script = ExtResource("1_qtbmi")
@@ -209,5 +241,92 @@ position = Vector2(88, 79)
 
 [node name="Marker2D3" type="Marker2D" parent="EnemyEncounter"]
 position = Vector2(81, 227)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="HealthBar" type="ColorRect" parent="CanvasLayer"]
+offset_left = 30.0
+offset_top = 30.0
+offset_right = 235.0
+offset_bottom = 60.0
+color = Color(0, 0, 0, 1)
+script = SubResource("GDScript_fqvtk")
+
+[node name="GrayBar" type="ColorRect" parent="CanvasLayer/HealthBar"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -12.5
+offset_right = 100.0
+offset_bottom = 12.5
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.3194711, 0.31947106, 0.31947103, 1)
+
+[node name="GreenBar" type="ColorRect" parent="CanvasLayer/HealthBar/GrayBar"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -12.5
+offset_right = 200.0
+offset_bottom = 12.5
+grow_vertical = 2
+color = Color(0, 0.7764706, 0.05882353, 1)
+
+[node name="Label" type="Label" parent="CanvasLayer/HealthBar/GrayBar/GreenBar"]
+layout_mode = 1
+offset_left = 3.0
+offset_top = -3.0
+offset_right = 38.0
+offset_bottom = 25.0
+text = "100"
+label_settings = SubResource("LabelSettings_kvwx4")
+
+[node name="MeterBar" type="ColorRect" parent="CanvasLayer"]
+offset_left = 30.0
+offset_top = 80.0
+offset_right = 235.0
+offset_bottom = 110.0
+color = Color(0, 0, 0, 1)
+script = SubResource("GDScript_kvwx4")
+
+[node name="GrayBar" type="ColorRect" parent="CanvasLayer/MeterBar"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -12.5
+offset_right = 100.0
+offset_bottom = 12.5
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.3194711, 0.31947106, 0.31947103, 1)
+
+[node name="BlueBar" type="ColorRect" parent="CanvasLayer/MeterBar/GrayBar"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -12.5
+offset_bottom = 12.5
+grow_vertical = 2
+color = Color(0, 0.6720402, 0.94975144, 1)
+
+[node name="Label" type="Label" parent="CanvasLayer/MeterBar/GrayBar/BlueBar"]
+layout_mode = 1
+offset_left = 3.0
+offset_top = -3.0
+offset_right = 38.0
+offset_bottom = 25.0
+text = "0%"
+label_settings = SubResource("LabelSettings_kvwx4")
 
 [editable path="thePlayer"]
