@@ -429,16 +429,6 @@ position = Vector2(0, -2)
 rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_qsbax")
 
-[node name="RichTextLabel" type="RichTextLabel" parent="playerBody"]
-z_index = 4096
-offset_left = -100.0
-offset_top = -96.0
-offset_right = 20.0
-offset_bottom = -36.0
-theme_override_constants/outline_size = 6
-scroll_active = false
-autowrap_mode = 0
-
 [node name="shadow" type="Sprite2D" parent="playerBody"]
 modulate = Color(1, 1, 1, 0.58431375)
 self_modulate = Color(1, 1, 1, 0.78039217)

@@ -6,7 +6,6 @@ class_name player   # the tutorial doesnt talk about this(because technically th
 
 @onready var playerBody: CharacterBody2D = %playerBody # this grabs a reference to the Player Body, so you can move the player around
 @onready var player_sprite: AnimatedSprite2D = $playerBody/hitBox/playerSprite
-@onready var rich_text_label: RichTextLabel = $playerBody/RichTextLabel
 @onready var shadow: Sprite2D = $playerBody/shadow
 @onready var hit_box: Node2D = $playerBody/hitBox
 @onready var sound_track_1: AudioStreamPlayer2D = $playerBody/soundTrack1
@@ -61,7 +60,10 @@ const parryWindow := 0.2
 var parryCooldownTimer := 0.0
 const parryCooldownAmount := parryWindow + 1.0  # you have to add parryWindow, because parry cooldown starts the moment you parry
 
-var specialMeter := 0.0
+var specialMeter := 0.0:
+	set(val):
+		specialMeter = val
+		GameGlobals.ult_meter_changed.emit(specialMeter)
 var currentAnim = ""
 
 var is_item_equipped: bool
@@ -73,7 +75,6 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:     # _physics_process runs in fixed(very tiny) intervals, regardless of the framerate
 												 # This makes it good for movement and physics-based code
-	rich_text_label.text =  "Health:" + str(health) + "\nMeter: " + str(specialMeter)# temporary 
 	if attackBusyTimer > 0:
 		attackBusyTimer -= delta
 	if comboTimer > 0:
@@ -335,6 +336,7 @@ func take_hit(damage: int, knockback_dir: Vector2, knockback_strength: float, st
 		return
 	
 	health -= damage
+	GameGlobals.player_hit.emit(health)
 	if player_action_animator.current_animation != "specialAttack":
 		player_action_animator.stop()
 		player_action_animator.play("hurtAnim")

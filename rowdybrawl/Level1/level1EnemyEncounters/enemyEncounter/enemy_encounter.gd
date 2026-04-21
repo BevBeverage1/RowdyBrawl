@@ -11,6 +11,7 @@ signal all_round_enemies_died()
 @export var time_between_rounds: float = 2
 
 @export var rounds: Array[EncounterRound]
+@export var delete_on_encounter_ended: Array[NodePath]
 var current_round_index := 0
 
 var boundaries: StaticBody2D
@@ -29,7 +30,6 @@ func _ready() -> void:
 	if get_children().any(func(c): return c is StaticBody2D):
 		boundaries = get_child(get_children().find_custom(func(c): return c is StaticBody2D))
 		boundaries.collision_layer = 0
-		encounter_ended.connect(boundaries.queue_free)
 		encounter_activated.connect(func(): boundaries.collision_layer = 3)
 
 
@@ -58,19 +58,37 @@ func spawnCurrentRound():
 		_alive_enemies_count += 1
 	
 	round_started.emit()
-	print(_alive_enemies_count)
 
 
 		
+## returns Array[Marker2D] of all child spawn points
 func get_all_spawn_points() -> Array:
 	return find_children("*", "Marker2D", true)
 
 
 func _on_player_trigger_body_entered(body: Node2D) -> void:
 	if body.get_parent() is player:
-		body_entered.disconnect(_on_player_trigger_body_entered)
-		encounter_activated.emit()
-		spawnCurrentRound()
+		_on_encounter_activated()
+
+
+func _on_encounter_activated():
+	body_entered.disconnect(_on_player_trigger_body_entered)
+	encounter_activated.emit()
+	spawnCurrentRound()
+
+
+func _on_encounter_ended():
+	# delete nodes
+	for nodepath: NodePath in delete_on_encounter_ended:
+		var node = get_node(nodepath)
+		if node:
+			node.queue_free()
+
+	# emit signals
+	encounter_ended.emit()
+	GameGlobals.encounter_finished.emit()
+
+
 
 func _get_configuration_warnings() -> PackedStringArray:
 	if not get_children().any(func(c): return c is Marker2D):
@@ -90,4 +108,4 @@ func _on_enemy_died():
 		if current_round_index < rounds.size():
 			spawnCurrentRound()
 		else:
-			encounter_ended.emit()
+			_on_encounter_ended()
