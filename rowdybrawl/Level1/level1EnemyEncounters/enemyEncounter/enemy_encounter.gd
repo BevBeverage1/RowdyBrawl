@@ -58,7 +58,6 @@ func spawnCurrentRound():
 		_alive_enemies_count += 1
 	
 	round_started.emit()
-	print(_alive_enemies_count)
 
 
 		
