@@ -85,9 +85,10 @@ func _on_enemy_died():
 		all_round_enemies_died.emit()
 		current_round_index += 1
 
-		await get_tree().create_timer(time_between_rounds).timeout
 		
 		if current_round_index < rounds.size():
+			await get_tree().create_timer(time_between_rounds).timeout
 			spawnCurrentRound()
 		else:
 			encounter_ended.emit()
+			GameGlobals.encounter_finished.emit()

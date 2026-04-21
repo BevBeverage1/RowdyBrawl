@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://cqq8uovueylvg"]
+[gd_scene load_steps=29 format=3 uid="uid://cqq8uovueylvg"]
 
 [ext_resource type="PackedScene" uid="uid://b5c8708romg66" path="res://playerFolder/the_player.tscn" id="1_dgsmt"]
 [ext_resource type="Script" uid="uid://b16sfvefc1rxk" path="res://Level1/level_1.gd" id="1_qtbmi"]
@@ -10,7 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://bhe8dmp47prd3" path="res://CameraSystem/camera_follow_path.tscn" id="9_jvwuh"]
 [ext_resource type="PackedScene" uid="uid://glcguyxiguua" path="res://CameraSystem/camera_follow_path_section.tscn" id="10_2okni"]
 [ext_resource type="Resource" uid="uid://cmd1ubmo5tl53" path="res://Level1/level1EnemyEncounters/enemyEncounter1/encounter1_round1.tres" id="10_kvwx4"]
-[ext_resource type="Resource" uid="uid://dyf70aiph8xu1" path="res://Level1/level1EnemyEncounters/enemyEncounter1/encounter1_round2.tres" id="11_u0gep"]
+[ext_resource type="Texture2D" uid="uid://cr7mgw2116t4b" path="res://Level1/levelSprites/pixel_arrow.png" id="12_kvwx4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_im851"]
 size = Vector2(867, 85)
@@ -79,6 +79,44 @@ func _on_ult_meter_changed(ult_meter: float):
 	$GrayBar/BlueBar/Label.text = \"%.0f%%\" % (ult_meter * 100)
 	$GrayBar/BlueBar.size.x = 200 * ult_meter
 "
+
+[sub_resource type="Animation" id="Animation_kvwx4"]
+resource_name = "blink"
+length = 2.52
+step = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.42, 0.84, 1.26, 1.68, 2.1, 2.52),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [false, true, false, true, false, true, false]
+}
+
+[sub_resource type="Animation" id="Animation_u0gep"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_a5xyl"]
+_data = {
+&"RESET": SubResource("Animation_u0gep"),
+&"blink": SubResource("Animation_kvwx4")
+}
 
 [node name="Level1" type="Node2D"]
 script = ExtResource("1_qtbmi")
@@ -193,7 +231,7 @@ offset_bottom = -800.2106
 scale = Vector2(48.334335, 33.141342)
 
 [node name="Collectible" parent="." instance=ExtResource("8_i80g2")]
-position = Vector2(1775, 163)
+position = Vector2(-33, 83)
 
 [node name="CameraFollowPath" parent="." node_paths=PackedStringArray("target_node") instance=ExtResource("9_jvwuh")]
 curve = SubResource("Curve2D_jvwuh")
@@ -202,14 +240,6 @@ target_node = NodePath("../thePlayer/playerBody")
 [node name="Camera2D" type="Camera2D" parent="CameraFollowPath"]
 position = Vector2(635, 35)
 position_smoothing_enabled = true
-
-[node name="CameraFollowPathSection" parent="CameraFollowPath" node_paths=PackedStringArray("camera_follow_path") instance=ExtResource("10_2okni")]
-position = Vector2(635, 35)
-camera_follow_path = NodePath("..")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CameraFollowPath/CameraFollowPathSection"]
-position = Vector2(-37.5, 0)
-shape = SubResource("RectangleShape2D_2okni")
 
 [node name="CameraFollowPathSection2" parent="CameraFollowPath" node_paths=PackedStringArray("camera_follow_path") instance=ExtResource("10_2okni")]
 position = Vector2(2875, 70)
@@ -220,7 +250,7 @@ shape = SubResource("RectangleShape2D_2okni")
 
 [node name="EnemyEncounter" parent="." instance=ExtResource("8_jvwuh")]
 position = Vector2(606, 75)
-rounds = Array[ExtResource("9_fqvtk")]([ExtResource("10_kvwx4"), ExtResource("11_u0gep")])
+rounds = Array[ExtResource("9_fqvtk")]([ExtResource("10_kvwx4")])
 
 [node name="StaticBody2D" type="StaticBody2D" parent="EnemyEncounter"]
 collision_layer = 0
@@ -233,6 +263,14 @@ shape = SubResource("RectangleShape2D_fqvtk")
 position = Vector2(554, -45)
 shape = SubResource("RectangleShape2D_fqvtk")
 
+[node name="CameraFollowPathSection" parent="EnemyEncounter/StaticBody2D" node_paths=PackedStringArray("camera_follow_path") instance=ExtResource("10_2okni")]
+position = Vector2(29, -40)
+camera_follow_path = NodePath("../../../CameraFollowPath")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyEncounter/StaticBody2D/CameraFollowPathSection"]
+position = Vector2(-37.5, 0)
+shape = SubResource("RectangleShape2D_2okni")
+
 [node name="Marker2D" type="Marker2D" parent="EnemyEncounter"]
 position = Vector2(43, -26)
 
@@ -244,7 +282,16 @@ position = Vector2(81, 227)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="HealthBar" type="ColorRect" parent="CanvasLayer"]
+[node name="Control" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HealthBar" type="ColorRect" parent="CanvasLayer/Control"]
+layout_mode = 0
 offset_left = 30.0
 offset_top = 30.0
 offset_right = 235.0
@@ -252,7 +299,7 @@ offset_bottom = 60.0
 color = Color(0, 0, 0, 1)
 script = SubResource("GDScript_fqvtk")
 
-[node name="GrayBar" type="ColorRect" parent="CanvasLayer/HealthBar"]
+[node name="GrayBar" type="ColorRect" parent="CanvasLayer/Control/HealthBar"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -267,7 +314,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.3194711, 0.31947106, 0.31947103, 1)
 
-[node name="GreenBar" type="ColorRect" parent="CanvasLayer/HealthBar/GrayBar"]
+[node name="GreenBar" type="ColorRect" parent="CanvasLayer/Control/HealthBar/GrayBar"]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
@@ -278,8 +325,8 @@ offset_bottom = 12.5
 grow_vertical = 2
 color = Color(0, 0.7764706, 0.05882353, 1)
 
-[node name="Label" type="Label" parent="CanvasLayer/HealthBar/GrayBar/GreenBar"]
-layout_mode = 1
+[node name="Label" type="Label" parent="CanvasLayer/Control/HealthBar/GrayBar/GreenBar"]
+layout_mode = 0
 offset_left = 3.0
 offset_top = -3.0
 offset_right = 38.0
@@ -287,7 +334,8 @@ offset_bottom = 25.0
 text = "100"
 label_settings = SubResource("LabelSettings_kvwx4")
 
-[node name="MeterBar" type="ColorRect" parent="CanvasLayer"]
+[node name="MeterBar" type="ColorRect" parent="CanvasLayer/Control"]
+layout_mode = 0
 offset_left = 30.0
 offset_top = 80.0
 offset_right = 235.0
@@ -295,7 +343,7 @@ offset_bottom = 110.0
 color = Color(0, 0, 0, 1)
 script = SubResource("GDScript_kvwx4")
 
-[node name="GrayBar" type="ColorRect" parent="CanvasLayer/MeterBar"]
+[node name="GrayBar" type="ColorRect" parent="CanvasLayer/Control/MeterBar"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -310,7 +358,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.3194711, 0.31947106, 0.31947103, 1)
 
-[node name="BlueBar" type="ColorRect" parent="CanvasLayer/MeterBar/GrayBar"]
+[node name="BlueBar" type="ColorRect" parent="CanvasLayer/Control/MeterBar/GrayBar"]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
@@ -320,7 +368,7 @@ offset_bottom = 12.5
 grow_vertical = 2
 color = Color(0, 0.6720402, 0.94975144, 1)
 
-[node name="Label" type="Label" parent="CanvasLayer/MeterBar/GrayBar/BlueBar"]
+[node name="Label" type="Label" parent="CanvasLayer/Control/MeterBar/GrayBar/BlueBar"]
 layout_mode = 1
 offset_left = 3.0
 offset_top = -3.0
@@ -328,5 +376,39 @@ offset_right = 38.0
 offset_bottom = 25.0
 text = "0%"
 label_settings = SubResource("LabelSettings_kvwx4")
+
+[node name="ContinueArrows" type="VBoxContainer" parent="CanvasLayer/Control"]
+visible = false
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -151.0
+offset_top = -163.0
+offset_right = 209.00146
+offset_bottom = 925.0
+grow_horizontal = 0
+grow_vertical = 2
+scale = Vector2(0.295, 0.295)
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Control/ContinueArrows"]
+layout_mode = 2
+texture = ExtResource("12_kvwx4")
+
+[node name="TextureRect2" type="TextureRect" parent="CanvasLayer/Control/ContinueArrows"]
+layout_mode = 2
+texture = ExtResource("12_kvwx4")
+
+[node name="TextureRect3" type="TextureRect" parent="CanvasLayer/Control/ContinueArrows"]
+layout_mode = 2
+texture = ExtResource("12_kvwx4")
+
+[node name="ContinueArrowsAnimator" type="AnimationPlayer" parent="CanvasLayer/Control/ContinueArrows"]
+unique_name_in_owner = true
+libraries = {
+&"": SubResource("AnimationLibrary_a5xyl")
+}
 
 [editable path="thePlayer"]
